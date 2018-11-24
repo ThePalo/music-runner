@@ -20,33 +20,70 @@ import android.widget.ListView;
 
 public class MainScreen extends AppCompatActivity {
 
+    class Knapsack {
+        EditText in_time = findViewById(R.id.time);
+        int max_time = Integer.parseInt(in_time.getText().toString());
+        int total_songs = songList.size();
+        ArrayList sum_values = new ArrayList<Integer>(total_songs + 1);
+        int best = 0;
+        ArrayList<Song> partial_songList;
+
+        public void knapsack_order() {
+            sum_values.set(total_songs, 0);
+
+            for (int i = total_songs - 1; i >= 0; --i) {
+                sum_values.set(i, ((Integer) sum_values.get(i + 1) + (Integer) songList.get(i).value));
+            }
+            i_knapsack_order(0, 0, 0);
+        }
+
+        private void i_knapsack_order(int i, int value, int time) {
+            if (i == total_songs) {
+                if (value > best) {
+                    best = value;
+                    final_songList = partial_songList;
+                }
+            } else {
+                if (time + songList.get(i).time <= max_time && value + (int) sum_values.get(i) > best) {
+                    partial_songList.add(songList.get(i));
+                    i_knapsack_order(i + 1, value + songList.get(i).value, time + songList.get(i).time);
+                }
+                if (value + (int) sum_values.get(i + 1) > best) {
+                    partial_songList.remove(songList.get(i));
+                    i_knapsack_order(i + 1, value, time);
+                }
+            }
+        }
+    }
+
     private ArrayList<Song> songList;
     private ListView songView;
     private ArrayList<Song> final_songList;
-        private Button playlist;
+    private Button playlist;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main_screen);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_screen);
+        getSongs();
 
-            playlist = findViewById(R.id.playlist);
-            playlist.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    openPlay();
-                }
-            });
-        }
+        playlist = findViewById(R.id.playlist);
+        playlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainScreen.Knapsack knapsack = new Knapsack();
+                knapsack.knapsack_order();
+                PlaylistSingleton playlist = new PlaylistSingleton();
+                playlist.setPlaylist(final_songList);
+                openPlay();
+            }
+        });
+    }
 
-        public void openPlay() {
-            Intent intent = new Intent(this, Player.class);
-            startActivity(intent);
-        }
-
-
-        
-
+    public void openPlay() {
+        Intent intent = new Intent(this, Player.class);
+        startActivity(intent);
+    }
 
     public void getSongs() {
 
@@ -71,42 +108,6 @@ public class MainScreen extends AppCompatActivity {
                 int time = Integer.parseInt(musicCursor.getString(timeColumn));
                 String thisArtist = musicCursor.getString(artistColumn);
                 songList.add(new Song(thisId, thisTitle, time, 1, thisArtist));
-            }
-        }
-
-        class Knapscack {
-            EditText in_time = findViewById(R.id.time);
-            int max_time = Integer.parseInt(in_time.getText().toString());
-            int total_songs = songList.size();
-            ArrayList sum_values = new ArrayList<Integer>(total_songs + 1);
-            int best = 0;
-            ArrayList<Song> partial_songList;
-
-            public void knapsack_order() {
-                sum_values.set(total_songs, 0);
-
-                for (int i = total_songs - 1; i >= 0; --i) {
-                    sum_values.set(i, ((Integer) sum_values.get(i + 1) + (Integer) songList.get(i).value));
-                }
-                i_knapsack_order(0, 0, 0);
-            }
-
-            private void i_knapsack_order(int i, int value, int time) {
-                if (i == total_songs) {
-                    if (value > best) {
-                        best = value;
-                        final_songList = partial_songList;
-                    }
-                } else {
-                    if (time + songList.get(i).time <= max_time && value + (int) sum_values.get(i) > best) {
-                        partial_songList.add(songList.get(i));
-                        i_knapsack_order(i + 1, value + songList.get(i).value, time + songList.get(i).time);
-                    }
-                    if (value + (int) sum_values.get(i + 1) > best) {
-                        partial_songList.remove(songList.get(i));
-                        i_knapsack_order(i + 1, value, time);
-                    }
-                }
             }
         }
     }

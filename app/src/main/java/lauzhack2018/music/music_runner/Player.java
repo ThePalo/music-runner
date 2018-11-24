@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 public class Player extends AppCompatActivity {
 
     private PlayerAdapter playerAdapter;
@@ -14,6 +16,9 @@ public class Player extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        PlaylistSingleton data = PlaylistSingleton.getInstance();
+        ArrayList<Song> playlist = data.getPlaylist();
+
 
         final Button playpauseButton = (Button) findViewById(R.id.play_pause_button);
         playpauseButton.setOnClickListener(
@@ -22,11 +27,11 @@ public class Player extends AppCompatActivity {
                     public void onClick(View view) {
                         if (is_playing) {
                             playerAdapter.pause();
-                            playpauseButton.setText("Play"); //En vez de texto, hay que poner imagen
+                            //playpauseButton.setText("Play"); //En vez de texto, hay que poner imagen
                         }
                         else {
                             playerAdapter.play();
-                            playpauseButton.setText("Pause");
+                            //playpauseButton.setText("Pause");
                         }
                     }
                 }
