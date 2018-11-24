@@ -91,6 +91,8 @@ public class MainScreen extends AppCompatActivity {
         Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
 
+        //Caused by: java.lang.SecurityException: Permission Denial: reading com.android.providers.media.MediaProvider uri content://media/external/audio/media from pid=19069, uid=10101 requires android.permission.READ_EXTERNAL_STORAGE, or grantUriPermission()
+
         if (musicCursor != null && musicCursor.moveToFirst()) {
             //Get columns of interest
             int idColumn = musicCursor.getColumnIndex
