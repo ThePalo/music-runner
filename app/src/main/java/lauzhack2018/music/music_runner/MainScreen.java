@@ -56,8 +56,7 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private ArrayList<Song> songList;
-    private ListView songView;
+    private ArrayList<Song> songList = new ArrayList<>();
     private ArrayList<Song> final_songList;
     private Button playlist;
 
@@ -98,7 +97,7 @@ public class MainScreen extends AppCompatActivity {
             int idColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media._ID);
             int titleColumn = musicCursor.getColumnIndex
-                    (android.provider.MediaStore.Audio.Media.TITLE_KEY);
+                    (android.provider.MediaStore.Audio.Media.TITLE);
             int timeColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.DURATION);
             int artistColumn = musicCursor.getColumnIndex
@@ -109,7 +108,8 @@ public class MainScreen extends AppCompatActivity {
                 String thisTitle = musicCursor.getString(titleColumn);
                 int time = Integer.parseInt(musicCursor.getString(timeColumn));
                 String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId, thisTitle, time, 1, thisArtist));
+                Song toAdd = new Song(thisId, thisTitle, time, 1, thisArtist);
+                songList.add(toAdd);
             }
         }
     }
