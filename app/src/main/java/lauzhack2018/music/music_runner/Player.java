@@ -22,7 +22,7 @@ public class Player extends AppCompatActivity {
                     public void onClick(View view) {
                         if (is_playing) {
                             playerAdapter.pause();
-                            playpauseButton.setText("Play");
+                            playpauseButton.setText("Play"); //En vez de texto, hay que poner imagen
                         }
                         else {
                             playerAdapter.play();
