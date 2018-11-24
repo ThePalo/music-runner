@@ -43,7 +43,9 @@ public class MainScreen extends AppCompatActivity {
             Intent intent = new Intent(this, Player.class);
             startActivity(intent);
         }
-    
+
+
+        
 
 
     public void getSongs() {
