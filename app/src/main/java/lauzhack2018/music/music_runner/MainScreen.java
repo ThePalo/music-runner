@@ -22,13 +22,16 @@ public class MainScreen extends AppCompatActivity {
 
     class Knapsack {
         EditText in_time = findViewById(R.id.time);
-        int max_time = Integer.parseInt(in_time.getText().toString());
+        int max_time = Integer.parseInt(in_time.getText().toString()) *1000*60;
         int total_songs = songList.size();
-        ArrayList sum_values = new ArrayList<Integer>(total_songs + 1);
+        ArrayList sum_values = new ArrayList<Integer>();
         int best = 0;
-        ArrayList<Song> partial_songList;
+        ArrayList<Song> partial_songList=new ArrayList<>();
 
         public void knapsack_order() {
+            for(int i=0; i < total_songs+1; ++i){
+                sum_values.add(0);
+            }
             sum_values.set(total_songs, 0);
 
             for (int i = total_songs - 1; i >= 0; --i) {
