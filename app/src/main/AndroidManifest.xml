@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Player"></activity>
+        <activity android:name=".MainScreen$MainScreen" />
     </application>
 
 </manifest>
