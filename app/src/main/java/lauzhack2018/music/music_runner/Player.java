@@ -17,6 +17,8 @@ public class Player extends AppCompatActivity {
     ArrayList<Song> playlist;
     int currentSong;
 
+    Button play_and_pause;
+    Button next_button;
     TextView songTitle;
     TextView songArtist;
 
