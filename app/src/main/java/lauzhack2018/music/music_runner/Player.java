@@ -16,8 +16,8 @@ public class Player extends AppCompatActivity {
     PlaylistSingleton data;
     ArrayList<Song> playlist;
 
-    TextView songTitle = (TextView) findViewById(R.id.song_title_text);
-    TextView songArtist = (TextView) findViewById(R.id.song_artist_text);
+    TextView songTitle;
+    TextView songArtist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,8 @@ public class Player extends AppCompatActivity {
 
         data = PlaylistSingleton.getInstance();
         playlist = data.getPlaylist();
+        songTitle = (TextView) findViewById(R.id.song_title_text);
+        songArtist = (TextView) findViewById(R.id.song_artist_text);
 
         MediaPlayerManager manager = new MediaPlayerManager(this);
         playerAdapter = manager;
