@@ -7,7 +7,7 @@ import android.net.Uri;
 
 import java.io.IOException;
 
-public class MediaPlayerManager implements PlayerAdapter {
+public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompletionListener {
 
     private Context context;
     private MediaPlayer mediaPlayer;
@@ -22,12 +22,6 @@ public class MediaPlayerManager implements PlayerAdapter {
         }
     }
 
-    public void release() {
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-    }
 
     @Override
     public void play() {
@@ -49,6 +43,11 @@ public class MediaPlayerManager implements PlayerAdapter {
     }
 
     @Override
+    public void stop() {
+        mediaPlayer.stop();
+    }
+
+    @Override
     public boolean isPlaying() {
         if (mediaPlayer != null) {
             return mediaPlayer.isPlaying();
@@ -67,6 +66,18 @@ public class MediaPlayerManager implements PlayerAdapter {
             e.printStackTrace();
         }
         mediaPlayer.prepareAsync();
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.start();
+            }
+        });
     }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+
+    }
+
 
 }
