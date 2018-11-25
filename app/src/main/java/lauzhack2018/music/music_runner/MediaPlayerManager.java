@@ -44,6 +44,11 @@ public class MediaPlayerManager implements PlayerAdapter {
     }
 
     @Override
+    public void reset() {
+        mediaPlayer.reset();
+    }
+
+    @Override
     public boolean isPlaying() {
         if (mediaPlayer != null) {
             return mediaPlayer.isPlaying();
