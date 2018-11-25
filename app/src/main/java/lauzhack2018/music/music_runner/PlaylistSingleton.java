@@ -7,7 +7,12 @@ public class PlaylistSingleton {
         public ArrayList<Song> getPlaylist() {return playlist;}
         public void setPlaylist(ArrayList<Song> data) {this.playlist = playlist;}
 
-        private static final PlaylistSingleton holder = new PlaylistSingleton();
-        public static PlaylistSingleton getInstance() {return holder;}
+        private static PlaylistSingleton holder = null;
+        public static PlaylistSingleton getInstance() {
+                if (holder == null) {
+                        holder = new PlaylistSingleton();
+                }
+                return holder;
+        }
 }
 
