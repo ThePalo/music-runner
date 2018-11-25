@@ -18,6 +18,7 @@ import android.widget.ListView;
 
 
 
+
 public class MainScreen extends AppCompatActivity {
 
     class Knapsack {
@@ -66,10 +67,16 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
+    //Let's put a value to all songs! (From 0 to 20)
+    class Classify {
+
+
+    }
 
     private ArrayList<Song> songList = new ArrayList<>();
     private ArrayList<Song> final_songList = new ArrayList<>();
     private Button playlist;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,18 +138,5 @@ public class MainScreen extends AppCompatActivity {
 }
 
 
-    //Let's put a value to all songs! (From 0 to 20)
-   /* public void classify () {
-        int n = songList.size();
-        for (int i = 0; i < n; ++i) {
-            if (songList.get(i).genre != null && songList.get(i).genre == myGenres) {
-                songList.get(i).setValue(20);
-            }
-            else {
-                process_data
-            }
-        }
 
-
-    }*/
 

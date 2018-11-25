@@ -9,6 +9,7 @@ import android.widget.TextView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Player extends AppCompatActivity {
 
@@ -16,22 +17,42 @@ public class Player extends AppCompatActivity {
     PlaylistSingleton data;
     ArrayList<Song> playlist;
     int currentSong;
+    int time_init = 0;
+    int time;
+    class Timer {
+        private final Date createdDate = new java.util.Date();
 
+        public Timer () {
+            int t_playlist = playlist.size();
+            for (int i = 0; i < t_playlist; ++i) {
+                time_init += playlist.get(i).time;
+            }
+            time_init = time_init/1000;
+        }
+
+        public int getAgeInSeconds() {
+            java.util.Date now = new java.util.Date();
+            return time_init - (int)((now.getTime() - this.createdDate.getTime()) / 1000);
+        }
+    }
     Button play_and_pause;
     Button next_button;
     TextView songTitle;
     TextView songArtist;
+    TextView timerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         currentSong = 0;
-
+        Player.Timer timer = new Timer();
         data = PlaylistSingleton.getInstance();
         playlist = data.getPlaylist();
         songTitle = (TextView) findViewById(R.id.song_title_text);
         songArtist = (TextView) findViewById(R.id.song_artist_text);
+        timerView = (TextView) findViewById(R.id.timerView);
+        time = timer.getAgeInSeconds();
 
         MediaPlayerManager manager = new MediaPlayerManager(this);
         playerAdapter = manager;
@@ -52,6 +73,8 @@ public class Player extends AppCompatActivity {
                     }
                 }
         );
+
+
 
         Button nextButton = (Button) findViewById(R.id.next_button);
         nextButton.setOnClickListener(
@@ -97,12 +120,14 @@ public class Player extends AppCompatActivity {
         );
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         playerAdapter.loadSong(playlist.get(0).id);
         songTitle.setText(playlist.get(0).title);
         songArtist.setText(playlist.get(0).artist);
+        timerView.setText(Integer.toString(time/60)+':'+Integer.toString(time%60));
     }
 
 }
