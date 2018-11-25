@@ -10,22 +10,24 @@ import java.util.ArrayList;
 public class Player extends AppCompatActivity {
 
     private PlayerAdapter playerAdapter;
-    private boolean is_playing = false;
+    PlaylistSingleton data = PlaylistSingleton.getInstance();
+    ArrayList<Song> playlist = data.getPlaylist();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        PlaylistSingleton data = PlaylistSingleton.getInstance();
-        ArrayList<Song> playlist = data.getPlaylist();
 
+        MediaPlayerManager manager = new MediaPlayerManager(this);
+        playerAdapter = manager;
 
         final Button playpauseButton = (Button) findViewById(R.id.play_pause_button);
         playpauseButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (is_playing) {
+                        if (playerAdapter.isPlaying()) {
                             playerAdapter.pause();
                             //playpauseButton.setText("Play"); //En vez de texto, hay que poner imagen
                         }
@@ -36,9 +38,12 @@ public class Player extends AppCompatActivity {
                     }
                 }
         );
+    }
 
-        MediaPlayerManager manager = new MediaPlayerManager(this);
-        playerAdapter = manager;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        playerAdapter.loadSong(playlist.get(0).id);
     }
 
 }

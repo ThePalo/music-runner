@@ -1,7 +1,11 @@
 package lauzhack2018.music.music_runner;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
+
+import java.io.IOException;
 
 public class MediaPlayerManager implements PlayerAdapter {
 
@@ -16,12 +20,6 @@ public class MediaPlayerManager implements PlayerAdapter {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
-    }
-
-    public void loadSong (int id) {
-        initialize();
-
-        //get song from list, once we receive it
     }
 
     public void release() {
@@ -52,4 +50,18 @@ public class MediaPlayerManager implements PlayerAdapter {
         }
         return false;
     }
+
+    @Override
+    public void loadSong(long id) {
+        initialize();
+        Uri songUri = ContentUris.withAppendedId(
+                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+        try {
+            mediaPlayer.setDataSource(context.getApplicationContext(), songUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mediaPlayer.prepareAsync();
+    }
+
 }
