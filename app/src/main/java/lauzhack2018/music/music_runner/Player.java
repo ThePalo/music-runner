@@ -95,8 +95,6 @@ public class Player extends AppCompatActivity {
                     }
                 }
         );
-
-
     }
 
     @Override

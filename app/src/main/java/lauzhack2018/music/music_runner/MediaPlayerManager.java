@@ -43,6 +43,11 @@ public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompleti
     }
 
     @Override
+    public void stop() {
+        mediaPlayer.stop();
+    }
+
+    @Override
     public boolean isPlaying() {
         if (mediaPlayer != null) {
             return mediaPlayer.isPlaying();
@@ -61,10 +66,18 @@ public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompleti
             e.printStackTrace();
         }
         mediaPlayer.prepareAsync();
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.start();
+            }
+        });
     }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
 
     }
+
+
 }
