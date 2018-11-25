@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class PlaylistSingleton {
         private ArrayList<Song> playlist;
         public ArrayList<Song> getPlaylist() {return playlist;}
-        public void setPlaylist(ArrayList<Song> data) {this.playlist = playlist;}
+        public void setPlaylist(ArrayList<Song> data) {this.playlist = data;}
+
+        private PlaylistSingleton() {}
 
         private static PlaylistSingleton holder = null;
         public static PlaylistSingleton getInstance() {
