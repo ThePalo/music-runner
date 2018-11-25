@@ -1,5 +1,6 @@
 package lauzhack2018.music.music_runner;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 public class Player extends AppCompatActivity {
 
     private PlayerAdapter playerAdapter;
-    PlaylistSingleton data;
     ArrayList<Song> playlist;
     int currentSong;
 
@@ -27,7 +27,7 @@ public class Player extends AppCompatActivity {
         setContentView(R.layout.activity_player);
         currentSong = 0;
 
-        data = PlaylistSingleton.getInstance();
+        PlaylistSingleton data = PlaylistSingleton.getInstance();
         playlist = data.getPlaylist();
         songTitle = (TextView) findViewById(R.id.song_title_text);
         songArtist = (TextView) findViewById(R.id.song_artist_text);
@@ -58,7 +58,7 @@ public class Player extends AppCompatActivity {
                     public void onClick(View view) {
                         if (currentSong != playlist.size()-1) {
                             playerAdapter.reset();
-                            playerAdapter.loadSong(playlist.get(currentSong+1).id);
+                            playerAdapter.loadSong(currentSong+1);
                             songTitle.setText(playlist.get(currentSong+1).title);
                             songArtist.setText(playlist.get(currentSong+1).artist);
                             ++currentSong;
@@ -78,7 +78,7 @@ public class Player extends AppCompatActivity {
                     public void onClick(View view) {
                         if (currentSong != 0) {
                             playerAdapter.reset();
-                            playerAdapter.loadSong(playlist.get(currentSong-1).id);
+                            playerAdapter.loadSong(currentSong-1);
                             songTitle.setText(playlist.get(currentSong-1).title);
                             songArtist.setText(playlist.get(currentSong-1).artist);
                             --currentSong;
@@ -86,7 +86,7 @@ public class Player extends AppCompatActivity {
                         }
                         else {
                             playerAdapter.reset();
-                            playerAdapter.loadSong(playlist.get(0).id);
+                            playerAdapter.loadSong(0);
                             songTitle.setText(playlist.get(0).title);
                             songArtist.setText(playlist.get(0).artist);
                             currentSong = 0;
@@ -95,16 +95,17 @@ public class Player extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        playerAdapter.loadSong(playlist.get(0).id);
+        playerAdapter.loadSong(0);
         songTitle.setText(playlist.get(0).title);
         songArtist.setText(playlist.get(0).artist);
+        currentSong = 0;
     }
-
 
 
 }

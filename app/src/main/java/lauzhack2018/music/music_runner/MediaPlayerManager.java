@@ -6,14 +6,20 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompletionListener {
+public class MediaPlayerManager implements PlayerAdapter {
 
     private Context context;
     private MediaPlayer mediaPlayer;
 
+    ArrayList<Song> playlist;
+    int currentSong;
+
     public MediaPlayerManager(Context context){
         this.context = context.getApplicationContext();
+        PlaylistSingleton data = PlaylistSingleton.getInstance();
+        playlist = data.getPlaylist();
     }
 
     private void initialize() {
@@ -42,10 +48,6 @@ public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompleti
         mediaPlayer.reset();
     }
 
-    @Override
-    public void stop() {
-        mediaPlayer.stop();
-    }
 
     @Override
     public boolean isPlaying() {
@@ -56,10 +58,10 @@ public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompleti
     }
 
     @Override
-    public void loadSong(long id) {
+    public void loadSong(final int index) {
         initialize();
         Uri songUri = ContentUris.withAppendedId(
-                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, playlist.get(index).id);
         try {
             mediaPlayer.setDataSource(context.getApplicationContext(), songUri);
         } catch (IOException e) {
@@ -70,13 +72,16 @@ public class MediaPlayerManager implements PlayerAdapter, MediaPlayer.OnCompleti
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.start();
+                currentSong = index;
             }
         });
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-
+    public void setOnCompletionListener(MediaPlayer mediaPlayer) {
+        if (mediaPlayer.getCurrentPosition() > 0) {
+            mediaPlayer.reset();
+            loadSong(currentSong+1);
+        }
     }
 
 
