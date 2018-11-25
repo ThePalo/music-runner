@@ -10,14 +10,17 @@ import java.util.ArrayList;
 public class Player extends AppCompatActivity {
 
     private PlayerAdapter playerAdapter;
-    PlaylistSingleton data = PlaylistSingleton.getInstance();
-    ArrayList<Song> playlist = data.getPlaylist();
+    PlaylistSingleton data;
+    ArrayList<Song> playlist;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        data = PlaylistSingleton.getInstance();
+        playlist = data.getPlaylist();
 
         MediaPlayerManager manager = new MediaPlayerManager(this);
         playerAdapter = manager;
