@@ -2,6 +2,7 @@ package lauzhack2018.music.music_runner;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,8 +18,6 @@ public class Player extends AppCompatActivity {
     ArrayList<Song> playlist;
     int currentSong;
 
-    Button play_and_pause;
-    Button next_button;
     TextView songTitle;
     TextView songArtist;
 
@@ -36,22 +35,21 @@ public class Player extends AppCompatActivity {
         MediaPlayerManager manager = new MediaPlayerManager(this);
         playerAdapter = manager;
 
-        final Button playpauseButton = (Button) findViewById(R.id.play_pause_button);
-        playpauseButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (playerAdapter.isPlaying()) {
-                            playerAdapter.pause();
-                            //playpauseButton.setText("Play"); //En vez de texto, hay que poner imagen
-                        }
-                        else {
-                            playerAdapter.play();
-                            //playpauseButton.setText("Pause");
-                        }
-                    }
+
+        final Button play_and_pause = (Button) findViewById(R.id.play_pause_button);
+        play_and_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!playerAdapter.isPlaying()) {
+                    play_and_pause.setBackgroundResource(R.drawable.pause);
+                    playerAdapter.play();
+                } else {
+                    play_and_pause.setBackgroundResource(R.drawable.play);
+                    playerAdapter.pause();
                 }
-        );
+            }
+
+        });
 
         Button nextButton = (Button) findViewById(R.id.next_button);
         nextButton.setOnClickListener(
@@ -79,6 +77,7 @@ public class Player extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (currentSong != 0) {
+                            playerAdapter.reset();
                             playerAdapter.loadSong(playlist.get(currentSong-1).id);
                             songTitle.setText(playlist.get(currentSong-1).title);
                             songArtist.setText(playlist.get(currentSong-1).artist);
@@ -86,6 +85,7 @@ public class Player extends AppCompatActivity {
                             playerAdapter.play();
                         }
                         else {
+                            playerAdapter.reset();
                             playerAdapter.loadSong(playlist.get(0).id);
                             songTitle.setText(playlist.get(0).title);
                             songArtist.setText(playlist.get(0).artist);
@@ -95,6 +95,8 @@ public class Player extends AppCompatActivity {
                     }
                 }
         );
+
+
     }
 
     @Override
@@ -104,5 +106,7 @@ public class Player extends AppCompatActivity {
         songTitle.setText(playlist.get(0).title);
         songArtist.setText(playlist.get(0).artist);
     }
+
+
 
 }
