@@ -9,14 +9,14 @@ public class Song {
     String genre;
     //image??
 
-    public Song (long id, String title, int time, int value, String artist, String genre) {
+    public Song(long id, String title, int time, int value, String artist) {
         this.id = id;
         this.title = title;
         this.time = time;
         this.value = value;
         this.artist = artist;
-        this.genre = genre;
     }
+
 
     public long getId() {
         return id;
@@ -36,10 +36,6 @@ public class Song {
 
     public String getArtist() {
         return artist;
-    }
-
-    public String getGenre() {
-        return genre;
     }
 
     public void setValue (int value) {

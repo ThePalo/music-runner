@@ -22,7 +22,7 @@ public class MainScreen extends AppCompatActivity {
 
     class Knapsack {
         EditText in_time = findViewById(R.id.time);
-        int max_time = Integer.parseInt(in_time.getText().toString()) *1000*60;
+        int max_time = Integer.parseInt(in_time.getText().toString()) * 1000 * 60;
         int total_songs = songList.size();
         ArrayList sum_values = new ArrayList<Integer>();
         int best = 0;
@@ -30,9 +30,8 @@ public class MainScreen extends AppCompatActivity {
         ArrayList<Boolean> sol;
 
 
-
         public void knapsack_order() {
-            for(int i=0; i < total_songs+1; ++i){
+            for (int i = 0; i < total_songs + 1; ++i) {
                 sum_values.add(0);
                 partial_sol.add(false);
 
@@ -41,8 +40,8 @@ public class MainScreen extends AppCompatActivity {
                 sum_values.set(i, ((Integer) sum_values.get(i + 1) + (Integer) songList.get(i).value));
             }
             i_knapsack_order(0, 0, 0);
-            for (int i=0; i < total_songs+1; ++i) {
-                if ((boolean)sol.get(i)) {
+            for (int i = 0; i < total_songs + 1; ++i) {
+                if ((boolean) sol.get(i)) {
                     final_songList.add(songList.get(i));
                 }
             }
@@ -116,23 +115,21 @@ public class MainScreen extends AppCompatActivity {
                     (MediaStore.Audio.Media.ARTIST);
             int musicColumn = musicCursor.getColumnIndex
                     (MediaStore.Audio.Media.IS_MUSIC);
-            int genreColumn = musicCursor.getColumnIndex
-                    (MediaStore.Audio.GenresColumns.NAME);
-            //Get Data of songs
             while (musicCursor.moveToNext()) {
                 if (musicCursor.getLong(musicColumn) != '0') {
                     long thisId = musicCursor.getLong(idColumn);
                     String thisTitle = musicCursor.getString(titleColumn);
                     int time = Integer.parseInt(musicCursor.getString(timeColumn));
                     String thisArtist = musicCursor.getString(artistColumn);
-                    String thisGenre = musicCursor.getString(genreColumn);
                     // CHANGE --> VALUE = 1   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    Song toAdd = new Song(thisId, thisTitle, time, 1, thisArtist, thisGenre);
+                    Song toAdd = new Song(thisId, thisTitle, time, 1, thisArtist);
                     songList.add(toAdd);
                 }
             }
         }
     }
+}
+
 
     //Let's put a value to all songs! (From 0 to 20)
    /* public void classify () {
@@ -148,4 +145,4 @@ public class MainScreen extends AppCompatActivity {
 
 
     }*/
-}
+
