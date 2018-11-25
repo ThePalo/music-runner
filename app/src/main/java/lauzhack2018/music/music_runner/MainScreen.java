@@ -83,7 +83,7 @@ public class MainScreen extends AppCompatActivity {
             public void onClick(View view) {
                 MainScreen.Knapsack knapsack = new Knapsack();
                 knapsack.knapsack_order();
-                PlaylistSingleton playlist = new PlaylistSingleton();
+                PlaylistSingleton playlist = PlaylistSingleton.getInstance();
                 playlist.setPlaylist(final_songList);
                 openPlay();
             }
